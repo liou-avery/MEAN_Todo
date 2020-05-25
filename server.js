@@ -24,9 +24,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(methodOverride());
 
-app.listen(8080);
-console.log("App listening on port 8080");
-
 //model
 var Todo = mongoose.model('Todo', {
   text : String
@@ -58,8 +55,8 @@ app.post('/api/todos', function(req, res) {
 
 //delete a todo and update list of todos
 app.delete('/api/todos/:todo_id', function(req, res) {
-  Todo.remove({
-    id : req.params.todo_id
+  Todo.deleteOne({
+    _id : req.params.todo_id
   }, function(err, todo) {
     if (err) res.send(err);
     Todo.find(function(err, todos) {
@@ -68,3 +65,10 @@ app.delete('/api/todos/:todo_id', function(req, res) {
     });
   });
 });
+
+app.get('*', function(req, res) {
+  res.sendfile('./public/index.html');
+})
+
+app.listen(8080);
+console.log("App listening on port 8080");
